@@ -1,0 +1,20 @@
+<launch>
+  <!-- Run on the sensor host to publish a compressed point cloud. -->
+
+  <arg name="raw_topic" default="/points" />
+  <arg name="compressed_topic" default="/points/cloudini" />
+  <arg name="xyz_resolution" default="0.001" />
+
+  <node pkg="cloudini_ros1" type="cloudini_compress_node" name="cloudini_compress" output="screen">
+    <param name="input_topic" value="$(arg raw_topic)" />
+    <param name="output_topic" value="$(arg compressed_topic)" />
+    <param name="queue_size" value="1" />
+    <param name="xyz_resolution" value="$(arg xyz_resolution)" />
+    <param name="compression" value="zstd" />
+
+    <!-- Optional explicit per-field overrides; these take precedence over the defaults.
+         A resolution must be > 0: dropping fields is not supported.
+    <rosparam param="field_resolutions">{x: 0.001, y: 0.001, z: 0.001, intensity: 0.01}</rosparam>
+    -->
+  </node>
+</launch>

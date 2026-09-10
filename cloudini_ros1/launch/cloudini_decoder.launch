@@ -1,0 +1,13 @@
+<launch>
+  <!-- Run on the base host to reconstruct a point cloud from the compressed topic. -->
+
+  <arg name="compressed_topic" default="/points/cloudini"/>
+  <arg name="decoded_topic"    default="/points/decoded"/>
+
+  <node pkg="cloudini_ros1" type="cloudini_decompress_node" name="cloudini_decompress" output="screen">
+    <param name="input_topic"  value="$(arg compressed_topic)"/>
+    <param name="output_topic" value="$(arg decoded_topic)"/>
+    <param name="queue_size"   value="1"/>
+    <param name="tcp_no_delay" value="true"/>
+  </node>
+</launch>

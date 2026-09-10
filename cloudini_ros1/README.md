@@ -56,10 +56,10 @@ export ROS_MASTER_URI=http://<master-host>:11311
 export ROS_IP=<this machine's IP on the shared network>
 
 # sensor host
-rosrun cloudini_ros1 cloudini_compress_node _input_topic:=/livox/lidar _output_topic:=/livox/lidar/cloudini
+roslaunch cloudini_ros1 cloudini_encoder.launch raw_topic:=/livox/lidar compressed_topic:=/livox/lidar/cloudini
 
 # base host
-rosrun cloudini_ros1 cloudini_decompress_node _input_topic:=/livox/lidar/cloudini _output_topic:=/livox/lidar/decoded
+roslaunch cloudini_ros1 cloudini_decoder.launch compressed_topic:=/livox/lidar/cloudini decoded_topic:=/livox/lidar/decoded
 ```
 
 Check the gain with:
