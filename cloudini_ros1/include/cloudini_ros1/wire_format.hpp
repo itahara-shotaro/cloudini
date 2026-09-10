@@ -79,8 +79,7 @@ void writeEnvelope(
     const std::vector<uint8_t>& metadata, const std::vector<uint8_t>& payload, std::vector<uint8_t>& out);
 
 /// Parse and bounds-check an envelope. Never throws; returns false with a reason in `error`.
-bool parseEnvelope(
-    const uint8_t* data, size_t size, const WireLimits& limits, EnvelopeView& out, std::string& error);
+bool parseEnvelope(const uint8_t* data, size_t size, const WireLimits& limits, EnvelopeView& out, std::string& error);
 
 // ------------------------------ metadata skeleton ---------------------------------------
 

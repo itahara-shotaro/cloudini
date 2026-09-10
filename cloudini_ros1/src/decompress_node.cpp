@@ -49,8 +49,7 @@ class DecompressNode {
     std::string error;
     if (!decodePointCloud(*msg, limits_, decoder_, out_msg_, error)) {
       ++rejected_;
-      ROS_WARN_THROTTLE(
-          5.0, "cloudini_decompress: rejected a message on %s: %s", input_topic_.c_str(), error.c_str());
+      ROS_WARN_THROTTLE(5.0, "cloudini_decompress: rejected a message on %s: %s", input_topic_.c_str(), error.c_str());
       return;
     }
     const double elapsed_ms = (ros::WallTime::now() - start).toSec() * 1e3;

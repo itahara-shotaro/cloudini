@@ -29,8 +29,7 @@ void writeEnvelope(
   out.insert(out.end(), payload.begin(), payload.end());
 }
 
-bool parseEnvelope(
-    const uint8_t* data, size_t size, const WireLimits& limits, EnvelopeView& out, std::string& error) {
+bool parseEnvelope(const uint8_t* data, size_t size, const WireLimits& limits, EnvelopeView& out, std::string& error) {
   out = EnvelopeView{};
 
   if (data == nullptr) {

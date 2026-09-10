@@ -22,8 +22,8 @@ struct CodecOptions {
   Cloudini::CompressionOption compression = Cloudini::CompressionOption::ZSTD;
   Cloudini::EncodingOptions encoding = Cloudini::EncodingOptions::LOSSY;
 
-  double xyz_resolution = 0.001;        // metres
-  double intensity_resolution = 1.0;    // 0 => leave `intensity` lossless
+  double xyz_resolution = 0.001;                    // metres
+  double intensity_resolution = 1.0;                // 0 => leave `intensity` lossless
   std::map<std::string, double> field_resolutions;  // explicit per-field override
 
   bool use_threads = true;

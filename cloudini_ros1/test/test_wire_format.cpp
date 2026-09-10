@@ -214,12 +214,12 @@ TEST(Skeleton, PreflightRejectsHugeFieldCountWithoutAllocating) {
   // The whole reason preflight exists: ros::serialization resizes the vector before it
   // bounds-checks, so this must be rejected by our own parser first.
   std::vector<uint8_t> bytes;
-  putU32LE(bytes, 0);  // seq
-  putU32LE(bytes, 0);  // stamp.sec
-  putU32LE(bytes, 0);  // stamp.nsec
-  putU32LE(bytes, 0);  // frame_id length
-  putU32LE(bytes, 1);  // height
-  putU32LE(bytes, 1);  // width
+  putU32LE(bytes, 0);            // seq
+  putU32LE(bytes, 0);            // stamp.sec
+  putU32LE(bytes, 0);            // stamp.nsec
+  putU32LE(bytes, 0);            // frame_id length
+  putU32LE(bytes, 1);            // height
+  putU32LE(bytes, 1);            // width
   putU32LE(bytes, 0xFFFFFFFFu);  // field count
 
   std::string error;

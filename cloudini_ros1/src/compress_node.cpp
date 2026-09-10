@@ -96,11 +96,12 @@ class CompressNode {
   }
 
   void report() const {
-    const double ratio = total_in_bytes_ > 0 ? 100.0 * static_cast<double>(total_out_bytes_) /
-                                                   static_cast<double>(total_in_bytes_)
-                                             : 0.0;
+    const double ratio = total_in_bytes_ > 0
+                             ? 100.0 * static_cast<double>(total_out_bytes_) / static_cast<double>(total_in_bytes_)
+                             : 0.0;
     ROS_INFO_THROTTLE(
-        log_period_, "cloudini_compress: %zu published, ratio %.1f%%, %.2f ms/cloud, %zu cache rebuilds, %zu skipped, %zu rejected",
+        log_period_,
+        "cloudini_compress: %zu published, ratio %.1f%%, %.2f ms/cloud, %zu cache rebuilds, %zu skipped, %zu rejected",
         published_, ratio, total_encode_ms_ / static_cast<double>(published_), cache_.rebuilds(), skipped_, rejected_);
   }
 

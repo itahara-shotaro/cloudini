@@ -92,8 +92,8 @@ sensor_msgs::PointCloud2 makeXYZI(uint32_t n) {
 /// Encodes, then hands the raw envelope bytes to `mutate` before decoding.
 template <typename Mutator>
 bool roundTripWithTamper(
-    const sensor_msgs::PointCloud2& input, const CodecOptions& options, Mutator mutate,
-    sensor_msgs::PointCloud2& out, std::string& error) {
+    const sensor_msgs::PointCloud2& input, const CodecOptions& options, Mutator mutate, sensor_msgs::PointCloud2& out,
+    std::string& error) {
   EncoderCache cache;
   std::vector<uint8_t> payload_scratch;
   std::vector<uint8_t> meta_scratch;
@@ -195,8 +195,7 @@ TEST(ResolutionPolicy, ExplicitOverridesWin) {
 }
 
 TEST(ResolutionPolicy, RejectsZeroAndNonFloatOverrides) {
-  auto msg = makeCloud(
-      {{"x", sensor_msgs::PointField::FLOAT32}, {"ring", sensor_msgs::PointField::UINT16}}, 2);
+  auto msg = makeCloud({{"x", sensor_msgs::PointField::FLOAT32}, {"ring", sensor_msgs::PointField::UINT16}}, 2);
   Cloudini::EncodingInfo info;
   std::string error;
 
