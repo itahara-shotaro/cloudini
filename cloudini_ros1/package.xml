@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>cloudini_ros1</name>
+  <version>0.1.0</version>
+  <description>
+    ROS1 network bridge that compresses sensor_msgs/PointCloud2 with the Cloudini codec,
+    transports it as std_msgs/UInt8MultiArray, and reconstructs the cloud on another host.
+  </description>
+
+  <maintainer email="itahara-shotaro@ynl.t.u-tokyo.ac.jp">Shotaro Itahara</maintainer>
+  <license>Apache 2.0</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <depend>roscpp</depend>
+  <depend>sensor_msgs</depend>
+  <depend>std_msgs</depend>
+
+  <!-- Cloudini core is vendored via add_subdirectory(../cloudini_lib); only its
+       system compression dependencies need to be declared here. -->
+  <build_depend>libzstd-dev</build_depend>
+  <build_depend>lz4</build_depend>
+  <exec_depend>libzstd</exec_depend>
+
+  <test_depend>rostest</test_depend>
+</package>

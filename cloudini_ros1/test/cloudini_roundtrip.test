@@ -1,0 +1,17 @@
+<launch>
+  <!-- Both nodes with default topics; skip_when_no_subscribers is off so the test does not
+       race the compressor's subscriber count on startup. -->
+  <node pkg="cloudini_ros1" type="cloudini_compress_node" name="cloudini_compress" output="screen">
+    <param name="input_topic"              value="/points"/>
+    <param name="output_topic"             value="/points/cloudini"/>
+    <param name="xyz_resolution"           value="0.001"/>
+    <param name="skip_when_no_subscribers" value="false"/>
+  </node>
+
+  <node pkg="cloudini_ros1" type="cloudini_decompress_node" name="cloudini_decompress" output="screen">
+    <param name="input_topic"  value="/points/cloudini"/>
+    <param name="output_topic" value="/points/decoded"/>
+  </node>
+
+  <test test-name="cloudini_roundtrip" pkg="cloudini_ros1" type="test_cloudini_ros1_roundtrip" time-limit="120.0"/>
+</launch>

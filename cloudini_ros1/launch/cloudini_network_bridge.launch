@@ -1,0 +1,41 @@
+<launch>
+  <!--
+    Cloudini ROS1 network bridge.
+
+    Two-machine deployment: run the compressor on the sensor host and the decompressor on
+    the base host, both pointing at the same roscore. On each machine export
+
+      export ROS_MASTER_URI=http://<master-host>:11311
+      export ROS_IP=<this machine's IP on the shared network>
+
+    Only /points/cloudini crosses the link; the raw cloud never leaves the sensor host.
+    Both hosts must run the same cloudini checkout (see README, "Compatibility").
+  -->
+
+  <arg name="raw_topic"        default="/points"/>
+  <arg name="compressed_topic" default="/points/cloudini"/>
+  <arg name="decoded_topic"    default="/points/decoded"/>
+  <arg name="xyz_resolution"   default="0.001"/>
+
+  <!-- Sensor host -->
+  <node pkg="cloudini_ros1" type="cloudini_compress_node" name="cloudini_compress" output="screen">
+    <param name="input_topic"    value="$(arg raw_topic)"/>
+    <param name="output_topic"   value="$(arg compressed_topic)"/>
+    <param name="queue_size"     value="1"/>
+    <param name="xyz_resolution" value="$(arg xyz_resolution)"/>
+    <param name="compression"    value="zstd"/>
+
+    <!-- Optional explicit per-field overrides; these take precedence over the defaults.
+         A resolution must be > 0: dropping fields is not supported.
+    <rosparam param="field_resolutions">{x: 0.001, y: 0.001, z: 0.001, intensity: 0.01}</rosparam>
+    -->
+  </node>
+
+  <!-- Base host -->
+  <node pkg="cloudini_ros1" type="cloudini_decompress_node" name="cloudini_decompress" output="screen">
+    <param name="input_topic"  value="$(arg compressed_topic)"/>
+    <param name="output_topic" value="$(arg decoded_topic)"/>
+    <param name="queue_size"   value="1"/>
+    <param name="tcp_no_delay" value="true"/>
+  </node>
+</launch>

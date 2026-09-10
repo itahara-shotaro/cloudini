@@ -1,0 +1,52 @@
+<launch>
+  <!--
+    Self-contained bandwidth + fidelity benchmark: synthetic publisher -> compressor
+    -> decompressor -> checker, all on one host.
+
+      roslaunch cloudini_ros1 mock_benchmark.launch
+      roslaunch cloudini_ros1 mock_benchmark.launch mode:=uniform
+      roslaunch cloudini_ros1 mock_benchmark.launch rings:=64 rate:=20 nan_fraction:=0.05
+  -->
+
+  <arg name="mode"                 default="lidar"/>   <!-- lidar | uniform -->
+  <arg name="rings"                default="32"/>
+  <arg name="azimuths"             default="1024"/>
+  <arg name="count"                default="32768"/>   <!-- uniform mode only -->
+  <arg name="rate"                 default="10.0"/>
+  <arg name="nan_fraction"         default="0.0"/>
+  <arg name="duration"             default="20.0"/>
+  <arg name="xyz_resolution"       default="0.001"/>
+  <arg name="intensity_resolution" default="1.0"/>
+  <arg name="compression"          default="zstd"/>
+
+  <node pkg="cloudini_ros1" type="mock_cloud_publisher.py" name="mock_cloud_publisher" output="screen">
+    <param name="topic"        value="/points"/>
+    <param name="mode"         value="$(arg mode)"/>
+    <param name="rings"        value="$(arg rings)"/>
+    <param name="azimuths"     value="$(arg azimuths)"/>
+    <param name="count"        value="$(arg count)"/>
+    <param name="rate"         value="$(arg rate)"/>
+    <param name="nan_fraction" value="$(arg nan_fraction)"/>
+  </node>
+
+  <node pkg="cloudini_ros1" type="cloudini_compress_node" name="cloudini_compress" output="screen">
+    <param name="input_topic"              value="/points"/>
+    <param name="output_topic"             value="/points/cloudini"/>
+    <param name="xyz_resolution"           value="$(arg xyz_resolution)"/>
+    <param name="intensity_resolution"     value="$(arg intensity_resolution)"/>
+    <param name="compression"              value="$(arg compression)"/>
+    <param name="skip_when_no_subscribers" value="false"/>
+  </node>
+
+  <node pkg="cloudini_ros1" type="cloudini_decompress_node" name="cloudini_decompress" output="screen">
+    <param name="input_topic"  value="/points/cloudini"/>
+    <param name="output_topic" value="/points/decoded"/>
+  </node>
+
+  <node pkg="cloudini_ros1" type="bridge_benchmark.py" name="bridge_benchmark" output="screen" required="true">
+    <param name="duration"             value="$(arg duration)"/>
+    <param name="xyz_resolution"       value="$(arg xyz_resolution)"/>
+    <param name="intensity_resolution" value="$(arg intensity_resolution)"/>
+    <param name="label"                value="$(arg mode)"/>
+  </node>
+</launch>
