@@ -126,6 +126,12 @@ target_link_libraries(cloudini_lib
 )
 
 if(NOT EMSCRIPTEN)
+  set(THREADS_PREFER_PTHREAD_FLAG TRUE)
+  find_package(Threads REQUIRED)
+  target_link_libraries(cloudini_lib PUBLIC Threads::Threads)
+endif()
+
+if(NOT EMSCRIPTEN)
   if(CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64|i686")
     if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
       target_compile_options(cloudini_lib PRIVATE -msse4.1)
